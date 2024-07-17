@@ -69,12 +69,12 @@ class Kernel {
         bool *d_weights_delta_maps_channels;
 
         // STDP params
-        int *h_stdp_postcnt;
+        int *h_stdp_postcnt = NULL;
         int *d_stdp_postcnt;
 
         // Paredes' STDP params
         float stdp_paredes_objective_avg;
-        float *h_stdp_paredes_objective;
+        float *h_stdp_paredes_objective = NULL;
         float *d_stdp_paredes_objective;
         float *d_stdp_paredes_objective_avg;
 
@@ -158,7 +158,7 @@ class Layer {
         float learning_rate;
 
         // STDP params
-        int *h_stdp_precnt;
+        int *h_stdp_precnt = NULL;
         int *d_stdp_precnt;
 
         // Paredes' STDP params

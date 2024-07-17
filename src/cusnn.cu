@@ -71,13 +71,13 @@ Network::Network(const int inp_size[3], const float inp_scale[2], const float si
 
 // destructor
 Network::~Network(){
-
     free(this->h_inputs);
     free(this->h_inp_size);
     free(this->h_sim_step);
     free(this->h_node_refrac);
     free(this->h_synapse_trace_init);
     free(this->h_length_delay_inp);
+    free(this->h_drop_delays_th);  // This was missing before.
     free(this->h_histogram);
     free(this->h_histogram_SPM);
     free(this->h_histogram_type);
@@ -88,6 +88,7 @@ Network::~Network(){
     cudaFree(this->d_sim_step);
     cudaFree(this->d_node_refrac);
     cudaFree(this->d_length_delay_inp);
+    cudaFree(this->d_drop_delays_th);  // This was missing before.
     cudaFree(this->d_histogram);
     cudaFree(this->d_histogram_SPM);
     cudaFree(this->d_histogram_type);
@@ -153,11 +154,11 @@ Layer::Layer(std::string layer_type, bool learning, bool load_weights, bool home
 
 // destructor
 Layer::~Layer() {
-
     free(this->h_delay_indices);
     free(this->h_synapse_pretrace);
     free(this->h_kernels_cnvg);
-    free(this->h_stdp_precnt);
+    if (this->h_stdp_precnt != NULL)
+        free(this->h_stdp_precnt);
 
     cudaFree(this->d_delay_indices);
     cudaFree(this->d_max_kernel);
@@ -264,7 +265,6 @@ Kernel::Kernel(int out_node_kernel, int out_nodesep_kernel, int out_maps, int le
 
 // destructor
 Kernel::~Kernel() {
-
     free(this->h_node_train);
     free(this->h_nodesep_V);
     free(this->h_nodesep_refrac);
@@ -273,8 +273,10 @@ Kernel::~Kernel() {
     free(this->h_weights_inh);
     free(this->h_weights_total);
     free(this->h_delay_active);
-    free(this->h_stdp_paredes_objective);
-    free(this->h_stdp_postcnt);
+    if (this->h_stdp_paredes_objective != NULL)
+        free(this->h_stdp_paredes_objective);
+    if (this->h_stdp_postcnt != NULL)
+        free(this->h_stdp_postcnt);
 
     cudaFree(this->d_node_train);
     cudaFree(this->d_nodesep_perpendicular);

@@ -154,9 +154,12 @@ Layer::Layer(std::string layer_type, bool learning, bool load_weights, bool home
 
 // destructor
 Layer::~Layer() {
-    free(this->h_delay_indices);
-    free(this->h_synapse_pretrace);
-    free(this->h_kernels_cnvg);
+    if (this->h_delay_indices != NULL)
+        free(this->h_delay_indices);
+    if (this->h_synapse_pretrace != NULL)
+        free(this->h_synapse_pretrace);
+    if (this->h_kernels_cnvg != NULL)
+        free(this->h_kernels_cnvg);
     if (this->h_stdp_precnt != NULL)
         free(this->h_stdp_precnt);
 
@@ -167,7 +170,8 @@ Layer::~Layer() {
     cudaFree(this->d_stdp_precnt);
 
     // clean kernel data
-    free(this->h_kernels);
+    if (this->h_kernels != NULL)
+        free(this->h_kernels);
     cudaFree(this->h_d_kernels);
     cudaFree(this->d_d_kernels);
 }

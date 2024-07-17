@@ -94,7 +94,7 @@ class Layer {
         std::string layer_type_str;
 
         // kernel counter
-        int cnt_kernels;
+        int cnt_kernels = 0;
 
         // params
         bool load_weights;
@@ -121,7 +121,7 @@ class Layer {
         // synaptic delay
         int length_delay_inp;
         int length_delay_out;
-        int *h_delay_indices;
+        int *h_delay_indices = NULL;
         int *d_delay_indices;
 
         // input and output sizes
@@ -140,7 +140,7 @@ class Layer {
         bool inhibition;
 
         // pre-synaptic trace
-        float *h_synapse_pretrace;
+        float *h_synapse_pretrace = NULL;
         float *d_synapse_pretrace;
 
         // learning params
@@ -148,7 +148,7 @@ class Layer {
         bool limit_learning;
         bool enable_learning;
         bool inhibition_spatial;
-        bool *h_kernels_cnvg;
+        bool *h_kernels_cnvg = NULL;
         bool *d_kernels_cnvg;
         int learning_type;
         int enable_learning_cnt;
@@ -176,7 +176,7 @@ class Layer {
         bool stdp_gerstner_weight_dependence;
 
         // layers
-        Kernel** h_kernels;
+        Kernel** h_kernels = NULL;
         Kernel** h_d_kernels;
         Kernel** d_d_kernels = NULL;
 
